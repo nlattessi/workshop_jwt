@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+	<head>
+		<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/lumen/bootstrap.min.css" rel="stylesheet" integrity="sha256-kBMbBs0vxJSlN7T3a7hOLllj53zib5nbF7rn4NAKy04= sha512-PwtEPLjYjtwEveJNXQTih2qsQhTg4tjgIy0gruouyKN5NLD4G4jh+mMrf7cA2s5PVI71UlS8DBYr1iqrN7ivBg==" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h3 class="text-muted">JWT</h3>
+			</div>
+			
+			<hr/>
+
+			<form class="form-horizontal" id="tokenForm">
+			  <fieldset>
+			    <legend>GET TOKEN</legend>
+			    <div class="form-group">
+			      <label for="usernameInput" class="col-lg-2 control-label">Username</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" id="usernameInput" placeholder="Username">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <label for="passwordInput" class="col-lg-2 control-label">Password</label>
+			      <div class="col-lg-10">
+			        <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <div class="col-lg-10 col-lg-offset-2">
+			        <button type="submit" class="btn btn-primary">Obtener Token</button>
+			      </div>
+			    </div>
+			  </fieldset>
+			</form>
+
+			<pre><code id="tokenResponse"></code></pre>
+
+			<hr>
+
+			<form class="form-horizontal" id="payloadForm">
+			  <fieldset>
+			    <legend>SHOW PAYLOAD</legend>
+			    <div class="form-group">
+			      <label for="payloadTokenInput" class="col-lg-2 control-label">Token</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" id="payloadTokenInput" placeholder="Token">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <div class="col-lg-10 col-lg-offset-2">
+			        <button type="submit" class="btn btn-primary">Mostrar payload</button>
+			      </div>
+			    </div>
+			  </fieldset>
+			</form>
+
+			<pre><code id="payloadResponse"></code></pre>
+
+			<hr>
+
+			<form class="form-horizontal" id="menusForm">
+			  <fieldset>
+			    <legend>API PROXY/MENUS</legend>
+			    <div class="form-group">
+			      <label for="menusTokenInput" class="col-lg-2 control-label">Token</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" id="menusTokenInput" placeholder="Token">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <div class="col-lg-10 col-lg-offset-2">
+			        <button type="submit" class="btn btn-primary">Ver Menus</button>
+			      </div>
+			    </div>
+			  </fieldset>
+			</form>
+			
+			<pre><code id="menusResponse"></code></pre>
+
+			<hr>
+
+			<form class="form-horizontal" id="userForm">
+			  <fieldset>
+			    <legend>API PROXY/USER</legend>
+			    <div class="form-group">
+			      <label for="userTokenInput" class="col-lg-2 control-label">Token</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" id="userTokenInput" placeholder="Token">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <label for="userIdInput" class="col-lg-2 control-label">User Id</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" id="userIdInput" placeholder="User Id">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <div class="col-lg-10 col-lg-offset-2">
+			        <button type="submit" class="btn btn-primary">Ver User</button>
+			      </div>
+			    </div>
+			  </fieldset>
+			</form>
+
+			<pre><code id="userResponse"></code></pre>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+
+  $("#tokenForm").submit(function(event) {
+
+  	event.preventDefault();
+
+    var formData = {
+      'username': $('#usernameInput').val(),
+      'password': $('#passwordInput').val()
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/get_token',
+      data: JSON.stringify(formData),
+    })
+	.done(function(data) {
+	$("#tokenResponse").text(JSON.stringify(data));
+	})
+	.error(function(data) {
+	$("#tokenResponse").text(JSON.stringify(data.responseJSON));
+	});
+
+    $(this).trigger('reset');
+    
+  });
+
+  $("#payloadForm").submit(function(event) {
+
+  	event.preventDefault();
+
+    var token = $('#payloadTokenInput').val();
+
+    $.ajax({
+      type: 'GET',
+      url: '/get_payload',
+      headers: {"Authorization": token}
+    })
+	.done(function(data) {
+	$("#payloadResponse").text(data);
+	})
+	.error(function(data) {
+	$("#payloadResponse").text(JSON.stringify(data.responseJSON));
+	});
+
+    $(this).trigger('reset');
+    
+  });
+
+  $("#menusForm").submit(function(event) {
+
+  	event.preventDefault();
+
+    var token = $('#menusTokenInput').val();
+
+    $.ajax({
+      type: 'GET',
+      url: '/proxy/menus',
+      headers: {"Authorization": token}
+    })
+	.done(function(data) {
+	$("#menusResponse").text(data);
+	})
+	.error(function(data) {
+	$("#menusResponse").text(JSON.stringify(data.responseJSON));
+	});
+
+    $(this).trigger('reset');
+    
+  });
+
+  $("#userForm").submit(function(event) {
+
+  	event.preventDefault();
+
+  	var token = $('#userTokenInput').val();
+  	var userId = $('#userIdInput').val();
+
+    $.ajax({
+      type: 'GET',
+      url: '/proxy/user/' + userId,
+      headers: {"Authorization": token}
+    })
+	.done(function(data) {
+	$("#userResponse").text(data);
+	})
+	.error(function(data) {
+	$("#userResponse").text(JSON.stringify(data.responseJSON));
+	});
+
+    $(this).trigger('reset');
+    
+  });
+</script>
+
+	</body>
+</html>
+
