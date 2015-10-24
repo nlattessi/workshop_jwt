@@ -4,7 +4,7 @@ Workshop dado el 22/10/2015 sobre Json Web Tokens
 ***
 
 ### Encoder-Decoder
-Desarrollado en Python 2.7
+###### Desarrollado en Python 2.7
 
 ##### *encode.py*
 Ejecutar: `python encode.py`
@@ -27,7 +27,7 @@ Devuelve: el resultado de la verificacion de la firma del token con el secret in
 ***
 
 ### Server JWT
-Desarrollado en Python 3.4
+###### Desarrollado en Python 3.4
 
 Se debe correr con el interprete para la version 3.4
 
