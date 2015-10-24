@@ -21,6 +21,7 @@ Ejecutar: `python verify.py <token> <secret>`
 
 Devuelve: el resultado de la verificacion de la firma del token con el secret ingresado.
 
+
 Cada script se puede correr con Docker, cambiando el comando por:
 `docker run -it --rm --name encode.py -v "$PWD":/usr/src/myapp -w /usr/src/myapp python:2 python`
 
